@@ -12,25 +12,25 @@ public:
 	    cout << setw(30) << "-" << endl;
         cout << setfill(' ');
 
-        cout << "1. Enter the car list\n";
-        cout << "2. My garage\n";
-        cout << "3. Add a new car for my car list\n";
-        cout << "4. Modify vehicle information\n";
-        cout << "5. Search my car\n";
-        cout << "6. Search cars's name at garage\n";
-        cout << "7. Search automaker at garage\n";
-        cout << "8. Search car's color at garage\n";
-        cout << "9. Search car's price at garage\n";
-        cout << "10. Delete\n"; 
-        cout << "11. Exit\n";
-        cout << "Choose: ";
+        cout << "1. Thiet lap danh sach cac xe\n";
+        cout << "2. Hien thi garage\n";
+        cout << "3. Them chiec xe moi vao trong danh sach\n";
+        cout << "4. Sua thong tin cua chiec xe\n";
+        cout << "5. Tim kiem chiec xe\n";
+        cout << "6. Tim kiem chiec xe theo ten\n";
+        cout << "7. Tim kiem chiec xe theo hang\n";
+        cout << "8. Tim kiem chiec xe theo mau\n";
+        cout << "9. Tim kiem chiec xe theo gia\n";
+        cout << "10. Xoa chiec xe ra khoi garage\n"; 
+        cout << "11. Thoat\n";
+        cout << "Chon chuc nang: ";
         
         while(1){
             int t;
             cin>>t;
-            if (t >= 1 && t <= 10) return t;
-            cout << "Invalid!!";
-            cout << " Choose again: ";
+            if (t >= 1 && t <= 11) return t;
+            cout << "Khong dung dinh dang!!";
+            cout << " Xin moi nhap lai: ";
         }
     }
     void run() {

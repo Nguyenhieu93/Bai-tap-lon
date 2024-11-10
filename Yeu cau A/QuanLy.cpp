@@ -6,7 +6,7 @@
 using namespace std;
 
 int cmp(Car car1, Car car2) {
-        return car1.getName() < car2.getName();  
+        return car1.getPrice() < car2.getPrice();  
 }
 
 class QuanLy {
@@ -45,27 +45,19 @@ void QuanLy::input() {
         getline(fi, color);
         fi >> price; fi.ignore();
         Car b(soLuong, name, automaker, color, price);
-        if(i > 0) {
-            bool check = false;
-            int l=0, r=i, mid;
-            while(l < r) {
-                mid = (l+r)/2;
-                if(cars[mid] == b) {
-                    cars[mid].setSoluong(cars[mid].getSoluong()+b.getSoluong());
-                    check = true;
-                    break;
-                } else if(cars[mid].getPrice() < b.getPrice()) {
-                    l = mid+1;
+        if(i>0) {
+            for(int j=0; j<i; j++) {
+                if(cars[j] == b) {
+                    cars[j].setSoluong(cars[j].getSoluong()+b.getSoluong());
                 } else {
-                    r = mid-1;
+                    cars.push_back(b);
+                    break;
                 }
-            }
-            if(!check){
-                cars.push_back(b);
             }
         } else {
             cars.push_back(b);
         }
+        sort(cars.begin(), cars.end(), cmp);
     }
 }
 
@@ -74,15 +66,15 @@ void QuanLy::font() {
     cout << setw(100) << "-" << endl;
     cout << setfill(' ');                       
     cout << "|";
-    cout << left << setw(5) << "ID";
+    cout << left << setw(5) << "STT";
     cout << "|";
-    cout << left << setw(25) << "Name";
+    cout << left << setw(25) << "Ten";
     cout << "|";
-    cout << left << setw(25) << "Automaker";
+    cout << left << setw(25) << "Hang xe";
     cout << "|";
-    cout << left << setw(15) << "Color";
+    cout << left << setw(15) << "Mau sac";
     cout << "|";
-    cout << left << setw(15) << "Price";
+    cout << left << setw(15) << "Gia ban";
     cout << "|";
     cout << left << setw(9) << "So luong";
     cout << "|" << endl;
@@ -163,20 +155,33 @@ void QuanLy::modify() {
         cin >> soLuong;
         string name, autom, color;
         cin.ignore();
-        cout << "Name: ";
+        cout << "Ten: ";
         getline(cin, name);
-        cout << "Automaker: ";
+        cout << "Hang xe: ";
         getline(cin, autom);
-        cout << "Color: ";
+        cout << "Mau sac: ";
         getline(cin, color);
         double price;
-        cout << "Price: ";
+        cout << "Gia ban: ";
         cin >> price;
         if(soLuong != -1) cars[pos-1].setSoluong(soLuong);
         if(name != "-1") cars[pos-1].setName(name);
         if(autom != "-1") cars[pos-1].setAutomaker(autom);
         if(color != "-1") cars[pos-1].setcolor(color);
         if(price != -1) cars[pos-1].setPrice(price);
+        int l=0, r=num-1, mid;
+        while(l < r) {
+            mid = (l+r)/2;
+            if(cars[mid] == cars[pos-1]) {
+                cars[mid].setSoluong(cars[mid].getSoluong()+cars[pos-1].getSoluong());
+                cars.erase(cars.begin() + pos-1);
+                break;
+            } else if(cars[mid].getPrice() < cars[pos-1].getPrice()) {
+                l = mid+1;
+            } else {
+                r = mid-1;
+            }
+        }
         break;
     } while(1);
     setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
@@ -184,19 +189,19 @@ void QuanLy::modify() {
 
 void QuanLy::find() {
     setColor(FOREGROUND_GREEN | FOREGROUND_INTENSITY);
-    cout << "\n" << "Enter the car you want search for: \n";
+    cout << "\n" << "Nhap vao chiec xe ma ban muon tim kiem \n";
     string name, automaker, color;
     double price;
-    cout << "Name: ";
+    cout << "Ten: ";
     cin.ignore();
     getline(cin, name);
-    cout << "Automaker: ";
+    cout << "Hang xe: ";
     cin.ignore('\n'-1e9);
     getline(cin, automaker);
-    cout << "Color: ";
+    cout << "Mau xe: ";
     cin.ignore('\n'-1e9);
     getline(cin, color);
-    cout << "Price: ";
+    cout << "Gia: ";
     cin >> price;
     Car a(0, name, automaker, color, price);
 
@@ -218,13 +223,13 @@ void QuanLy::find() {
         cout << setfill('-');		
         cout << setw(100) << "-" << endl;
         cout << setfill(' ');
-    } else cout << "Not found!";
+    } else cout << "Khong tim thay!";
     setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 }
 
 void QuanLy::findPrice() {
     setColor(FOREGROUND_GREEN | FOREGROUND_INTENSITY);
-    cout << "\n" << "Enter the price: \n";
+    cout << "\n" << "Nhap vao gia muon tim kiem: \n";
     double price; cin >> price;
     bool check = false;
     for(int i=0; i<cars.size(); i++) {
@@ -244,24 +249,25 @@ void QuanLy::findPrice() {
         cout << setfill('-');		
         cout << setw(100) << "-" << endl;
         cout << setfill(' ');
-    } else cout << "Not found!";
+    } else cout << "Khong tim thay!";
     setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 }
 
 void QuanLy::findName() {
     setColor(FOREGROUND_GREEN | FOREGROUND_INTENSITY);
-    cout << "\n" << "Enter the name: \n";
-    string name; cin >> name;
+    cout << "\n" << "Nhap vao ten chiec xe muon tim kiem: \n";
+    cin.ignore();
+    string name; getline(cin, name);
     bool check = false;
     for(int i=0; i<cars.size(); i++) {
-        if(cars[i].getName() == name) {
+        if(Lower(cars[i].getName()) == Lower(name)) {
             check = true; break;
         }
     }
     if(check == true) {
         font();
         for(int i=0; i<cars.size(); i++) {
-            if(cars[i].getName() == name) {
+            if(Lower(cars[i].getName()) == Lower(name)) {
                 cout << "|";
                 cout << left << setw(5) << i+1;
                 cout << cars[i];
@@ -270,24 +276,25 @@ void QuanLy::findName() {
         cout << setfill('-');		
         cout << setw(100) << "-" << endl;
         cout << setfill(' ');
-    } else cout << "Not found!";
+    } else cout << "Khong tim thay!";
     setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 }
 
 void QuanLy::findColor() {
     setColor(FOREGROUND_GREEN | FOREGROUND_INTENSITY);
-    cout << "\n" << "Enter the color: \n";
-    string color; cin >> color;
+    cout << "\n" << "Nhap vao mau sac muon tim kiem: \n";
+    cin.ignore();
+    string color; getline(cin, color);
     bool check = false;
     for(int i=0; i<cars.size(); i++) {
-        if(cars[i].getColor() == color) {
+        if(Lower(cars[i].getColor()) == Lower(color)) {
             check = true; break;
         }
     }
     if(check == true) {
         font();
         for(int i=0; i<cars.size(); i++) {
-            if(cars[i].getColor() == color) {
+            if(Lower(cars[i].getColor()) == Lower(color)) {
                 cout << "|";
                 cout << left << setw(5) << i+1;
                 cout << cars[i];
@@ -296,24 +303,25 @@ void QuanLy::findColor() {
         cout << setfill('-');		
         cout << setw(100) << "-" << endl;
         cout << setfill(' ');
-    } else cout << "Not found!";
+    } else cout << "Khong tim thay!";
     setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 }
 
 void QuanLy::findAutomaker() {
     setColor(FOREGROUND_GREEN | FOREGROUND_INTENSITY);
-    cout << "\n" << "Enter the automaker: \n";
-    string autom; cin >> autom;
+    cout << "\n" << "Nhap vao hang xe muon tim kiem: \n";
+    cin.ignore();
+    string autom; getline(cin, autom);
     bool check = false;
     for(int i=0; i<cars.size(); i++) {
-        if(cars[i].getAutomaker() == autom) {
+        if(Lower(cars[i].getAutomaker()) == Lower(autom)) {
             check = true; break;
         }
     }
     if(check == true) {
         font();
         for(int i=0; i<cars.size(); i++) {
-            if(cars[i].getAutomaker() == autom) {
+            if(Lower(cars[i].getAutomaker()) == Lower(autom)) {
                 cout << "|";
                 cout << left << setw(5) << i+1;
                 cout << cars[i];
@@ -322,7 +330,7 @@ void QuanLy::findAutomaker() {
         cout << setfill('-');		
         cout << setw(100) << "-" << endl;
         cout << setfill(' ');
-    } else cout << "Not found!";
+    } else cout << "Khong tim thay!";
     setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 }
 

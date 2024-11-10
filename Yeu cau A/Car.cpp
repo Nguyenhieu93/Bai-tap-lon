@@ -42,19 +42,19 @@ public:
     void setSoluong(int n) {this->soLuong=n;}
     
     friend istream& operator>>(istream& is, Car& car) {
-        cout << "Enter the car information: " << endl;
+        cout << "Nhap vao thong tin cua chiec xe: " << endl;
         cout << "Nhap vao so luong: ";
         is >> car.soLuong;
-        cout << "Name: ";
+        cout << "Ten: ";
         is.ignore();
         getline(is, car.name);
-        cout << "Automaker: ";
+        cout << "Hang xe: ";
         is.ignore('\n'-1e9);
         getline(is, car.automaker);
-        cout << "Color: ";
+        cout << "Mau xe: ";
         is.ignore('\n'-1e9);
         getline(is, car.color);
-        cout << "Price: ";
+        cout << "Gia: ";
         is >> car.price;
         return is;
     }
