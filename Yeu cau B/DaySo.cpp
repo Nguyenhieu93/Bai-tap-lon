@@ -92,7 +92,7 @@ public:
             return false;
         }
     }
-    
+
     void xoaNguyenTo() {
         int pos = 1;
         for(auto it = numbers.begin(); it != numbers.end(); it++) {
@@ -126,7 +126,7 @@ int main() {
     a.output();
     a.sapXep();
     a.output();
-    // a.xoaNguyenTo();
+    a.xoaNguyenTo();
     a.output();
     a.xoaTrungNhau();
     a.output();
