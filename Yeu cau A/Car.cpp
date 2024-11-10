@@ -40,7 +40,7 @@ public:
     void setcolor(string color) {this->color = color;}
     void setPrice(double price) {this->price = price;}
     void setSoluong(int n) {this->soLuong=n;}
-
+    
     friend istream& operator>>(istream& is, Car& car) {
         cout << "Enter the car information: " << endl;
         cout << "Nhap vao so luong: ";
@@ -72,7 +72,6 @@ public:
         os <<  "|" << endl;
         return os;
     }
-
     bool operator==(const Car& other) const {
         return (Lower(name) == Lower(other.name) && Lower(automaker) == Lower(other.automaker) 
                     && Lower(color) == Lower(other.color) && price == other.price);
