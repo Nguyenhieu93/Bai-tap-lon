@@ -170,7 +170,7 @@ void QuanLy::modify() {
         if(color != "-1") cars[pos-1].setcolor(color);
         if(price != -1) cars[pos-1].setPrice(price);
         int l=0, r=num-1, mid;
-        while(l < r) {
+        while(l < r) { 
             mid = (l+r)/2;
             if(cars[mid] == cars[pos-1]) {
                 cars[mid].setSoluong(cars[mid].getSoluong()+cars[pos-1].getSoluong());
