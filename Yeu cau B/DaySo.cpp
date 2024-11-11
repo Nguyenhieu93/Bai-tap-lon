@@ -20,11 +20,10 @@ public:
 };
 
 void NumberList::creatNumberList() {
-    ifstream fi("Input.INP");
-    cout << "Enter the numbers (enter # to stop): ";
+    cout << "Enter the numbers (enter # to stop): \n";
     string s;
     while(1) {
-        fi >> s;
+        cin >> s;
         if(s == "#") break;
         double n = stod(s);
         numbers.push_back(n);
@@ -32,11 +31,26 @@ void NumberList::creatNumberList() {
 }
 
 void NumberList::output() {
-    cout << "Day so: ( ";
+    cout << "|";
+    cout << left << setw(7) << "Vi tri";
+    cout << "|";
+    cout << left << setw(15) << "Gia tri";
+    cout << "|" << endl;
+
+    cout << setfill('-');		
+    cout << setw(25) << "-" << endl;
+    cout << setfill(' ');  
+
+    int i=0;
     for(auto it = numbers.begin(); it != numbers.end(); it++) {
-        cout << *it << " ";
+        cout << "|";
+        cout << left << setw(7) << i+1;
+        cout << "|";
+        cout << left << setw(15) << *it;
+        cout << "|" << endl;
+        i++;
     }
-    cout << ")" << endl;
+    cout << "\n\n";
 }
 
 void NumberList::addNumber() {
