@@ -89,6 +89,7 @@ void NumberList::hasChanDuong() {
     auto it2 = ++tmp;
     auto tmp1 = it2;
     auto it3 = ++tmp1;
+    bool check = false;
     cout << "3 so chan duong dung canh nhau o cac vi tri: " << endl;
     while(it3 != numbers.end()) {
         if(fmod(*it1, 2) == 0 && *it1 > 0 &&
@@ -96,9 +97,11 @@ void NumberList::hasChanDuong() {
             fmod(*it3, 2) == 0 && *it3 > 0) {
             cout << cnt << ". "; cnt++;
             cout << "(" << pos+1 << ", " << pos+2 << ", " << pos+3 << ")" << endl;
+            check = true;
         }
         ++it1; ++it2; ++it3; ++pos;
     }
+    if(!check) cout << "\nKhong co 3 so chan duong dung canh nhau!!";
 }
 
 void NumberList::sapXep() {
@@ -149,10 +152,16 @@ int main() {
     NumberList a;
     a.creatNumberList();
     a.output();
+    a.addNumber();
+    a.hasK();
+    a.hasChanDuong();
     a.sapXep();
+    cout << "Danh sach so sau khi sap xep:" << endl;
     a.output();
     a.xoaNguyenTo();
+    cout << "Danh sach so sau khi xoa chu so nguyen to:" << endl;
     a.output();
     a.xoaTrungNhau();
+    cout << "Danh sach so sau khi xoa chu so trung nhau:" << endl;
     a.output();
 }

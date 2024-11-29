@@ -11,10 +11,9 @@ int cmp(Car car1, Car car2) {
 
 class QuanLy {
 private:
-    int num;
     vector<Car> cars;
 public:
-    QuanLy() : num(0) {}
+    QuanLy() {}
     void input();
     void font();
     void output();
@@ -32,8 +31,10 @@ public:
 };
 
 void QuanLy::input() {
+    int num;
     ifstream fi("input.inp");
     fi >> num; fi.ignore();
+    bool check = false;
     for(int i=0; i<num; i++) {
         int soLuong;
         string name, automaker, color;
@@ -45,20 +46,22 @@ void QuanLy::input() {
         getline(fi, color);
         fi >> price; fi.ignore();
         Car b(soLuong, name, automaker, color, price);
+        check = false;
         if(i>0) {
-            for(int j=0; j<i; j++) {
+            for(int j=0; j<cars.size(); j++) {
                 if(cars[j] == b) {
                     cars[j].setSoluong(cars[j].getSoluong()+b.getSoluong());
-                } else {
-                    cars.push_back(b);
-                    break;
+                    check = true;
+                }else {
+                    continue;
                 }
             }
+            if(check == false) cars.push_back(b);
         } else {
             cars.push_back(b);
         }
-        sort(cars.begin(), cars.end(), cmp);
     }
+    fi.close();
 }
 
 void QuanLy::font() {
@@ -106,38 +109,45 @@ void QuanLy::add() {
     setColor(FOREGROUND_GREEN | FOREGROUND_INTENSITY);
     bool check = false;
     Car b; cin >> b;
-    int l=0, r=num-1, mid;
-    while(l < r) {
-        mid = (l+r)/2;
-        if(cars[mid] == b) {
-            cars[mid].setSoluong(cars[mid].getSoluong()+b.getSoluong());
+    for(int i=0; i<cars.size(); i++) {
+        if(cars[i] == b) {
+            cars[i].setSoluong(cars[i].getSoluong()+b.getSoluong());
             check = true;
             break;
-        } else if(cars[mid].getPrice() < b.getPrice()) {
-            l = mid+1;
-        } else {
-            r = mid-1;
         }
     }
     if(!check){
         cars.push_back(b);
     }
-    sortCar();
-    num++;
     setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 }
 
 void QuanLy::erase1() {
     setColor(FOREGROUND_GREEN | FOREGROUND_INTENSITY);
-    cout << "\nNhap vao thu tu cua chiec xe muon xoa: ";
+    cout << "\nNhap vao thu tu cua chiec xe muon xoa: " << endl;
     int pos; cin >> pos;
-    cars.erase(cars.begin() + pos-1);
+    cout << "Ban muon xoa bao nhieu chiec xe nay: ";
+    int cnt;
+    do {
+        cin >> cnt;
+        if(cnt > cars[pos-1].getSoluong() || cnt < 0) {
+            cout << "Khong hop le, xin moi nhap lai: ";
+            continue;
+        }else {
+            break;
+        }
+    }while(1);
+    if(cnt == cars[pos-1].getSoluong()) {
+        cars.erase(cars.begin() + pos-1);  
+    } else {
+        cars[pos-1].setSoluong(cars[pos-1].getSoluong()-cnt);
+    }
     setColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 }
 
 void QuanLy::modify() {
     setColor(FOREGROUND_GREEN | FOREGROUND_INTENSITY);
-    if(num == 0) { 
+    if(cars.size() == 0) { 
         cout << "Khong co chiec xe nao trong garage!!";
         return;
     }
@@ -145,7 +155,7 @@ void QuanLy::modify() {
     do {
         cout << "Nhap vao so thu tu cua chiec xe muon sua: ";
         cin >> pos;
-        if(pos < 1 && pos > num) {
+        if(pos < 1 && pos > cars.size()) {
             cout << "So thu tu khong dung, xin moi nhap lai: ";
             continue;
         }
@@ -169,17 +179,11 @@ void QuanLy::modify() {
         if(autom != "-1") cars[pos-1].setAutomaker(autom);
         if(color != "-1") cars[pos-1].setcolor(color);
         if(price != -1) cars[pos-1].setPrice(price);
-        int l=0, r=num-1, mid;
-        while(l < r) { 
-            mid = (l+r)/2;
-            if(cars[mid] == cars[pos-1]) {
-                cars[mid].setSoluong(cars[mid].getSoluong()+cars[pos-1].getSoluong());
+        for(int i=0; i<cars.size(); i++) {
+            if(cars[i]==cars[pos-1] && i != pos-1) {
+                cars[i].setSoluong(cars[i].getSoluong()+cars[pos-1].getSoluong());
                 cars.erase(cars.begin() + pos-1);
                 break;
-            } else if(cars[mid].getPrice() < cars[pos-1].getPrice()) {
-                l = mid+1;
-            } else {
-                r = mid-1;
             }
         }
         break;
